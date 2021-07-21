@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>东宝科技-用户添加</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="page-header">
+            <h1>
+                用户菜单
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    用户管理
+                </small>
+            </h1>
+        </div>
+
+        <div id="signup-box" class="signup-box widget-box no-border">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <h4 class="header green lighter bigger">
+                        <i class="icon-group blue"></i>
+                        修改用户
+                    </h4>
+
+                    <div class="space-6"></div>
+                    <p> 请确认你要修改的信息</p>
+
+                    <form id="editUserInfo">
+                        <fieldset>
+                            <input type="hidden" name="userid" th:value="${userInfo.id}">
+                            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                    <input name="email" type="email" class="form-control" th:value="${userInfo.email}" placeholder="电子邮件地址" />
+                                    <i class="icon-envelope"></i>
+                                </span>
+                            </label>
+
+                            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                    <input name="username" type="text" class="form-control" th:value="${userInfo.username}" placeholder="用户名" />
+                                    <i class="icon-user"></i>
+                                </span>
+                            </label>
+
+                            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                    <input name="password" type="text" class="form-control" th:value="${userInfo.password}" placeholder="密码" />
+                                    <i class="icon-lock"></i>
+                                </span>
+                            </label>
+
+                            <div class="clearfix">
+                                <button type="reset" class="pull-left btn btn-sm" onclick="resetEditUserInfo()">
+                                    <i class="icon-refresh"></i>
+                                    重置
+                                </button>
+
+                                <button type="button" class="pull-left btn btn-sm btn-success" onclick="editUseInfo()">
+                                    修改
+                                    <i class="icon-arrow-right icon-on-right"></i>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--引入user js-->
+        <script src="../../user/user.js"></script>
+    </body>
+</html>

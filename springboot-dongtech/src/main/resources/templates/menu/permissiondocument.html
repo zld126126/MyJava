@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>东宝科技-权限管理</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="page-header">
+            <h1>
+                用户管理
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    权限管理
+                </small>
+            </h1>
+        </div>
+        <table id="sample-table-1" class="table">
+            <thead>
+                <tr>
+                    <th class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>角色名称</th>
+
+                    <th>角色权限</th>
+
+                    <th>权限内容</th>
+
+                    <th>权限路径</th>
+
+                    <th>权限操作</th>
+
+<!--                    <a class="btn btn-link right" href="#">
+                        <i class="icon-plus-sign bigger-120 green"></i>
+                        添加权限
+                    </a>-->
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="permission,permissionStat : ${permissiondocuments}">
+                    <td class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td th:text="${permission.permissionname}"></td>
+                    <td th:text="${permission.num}"></td>
+                    <td th:text="${permission.permissionname}"></td>
+                    <td>
+                        <div th:each="permissionpath,permissionpathStat : ${permission.permissionpaths}">
+                            <label th:text="${permissionpath.permissionpath}"></label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                            <button class="btn btn-xs btn-info" th:onclick="'javascript:toEditPage('+${permission.pid}+')'">
+                                <i class="icon-edit bigger-120"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--引入user js-->
+        <script src="../../user/userpermission.js"></script>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+#连接redis
+redis-cli.exe -h 127.0.0.1 -p 6381 
+#查看redis角色
+info replication
+#尝试 关闭redis的主服务器
+shutdown

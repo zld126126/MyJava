@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>东宝科技-404错误</title>
+		<!--引入公用js库-->
+		<script th:src="@{/common/commonjs.js}"></script>
+		<!--引入公用css库-->
+		<script th:src="@{/common/commoncss.js}"></script>
+	</head>
+	<body class="login-layout">
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container">
+							<!--<div class="center">
+								<h1>
+									<i class="icon-leaf green"></i>
+									<span class="red">后台系统</span>
+									<span class="white">主页</span>
+								</h1>
+								<h4 class="blue">&copy; 东宝科技</h4>
+							</div>-->
+
+							<div class="center">
+								<h2><span class="white">欢迎使用dongtech...</span></h2>
+								<h3>
+									<div class="center">
+										<img src="../img/500.jpg" th:width="400px" th:height="400px">
+									</div>
+								</h3>
+							</div>
+
+							<div class="center">
+								<h3><span class="red"><a th:href="@{/index}">返回首页</a></span></h3>
+							</div>
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div>
+		</div><!-- /.main-container -->
+	</body>
+</html>

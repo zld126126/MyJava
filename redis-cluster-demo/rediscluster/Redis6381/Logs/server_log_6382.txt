@@ -1,0 +1,3 @@
+[12952] 10 Sep 10:21:28.105 * Redis 3.2.100 (00000000/0) 64 bit, standalone mode, port 6382, pid 12952 ready to start.
+[12952] 10 Sep 10:21:28.105 # Server started, Redis version 3.2.100
+[12952] 10 Sep 10:21:28.105 * The server is now ready to accept connections on port 6382

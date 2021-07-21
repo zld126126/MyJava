@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dongtech.mapper.loan.RechargeRecordMapper">
+
+  <resultMap id="BaseResultMap" type="com.dongtech.model.loan.RechargeRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="rechargeNo" jdbcType="VARCHAR" property="rechargeNo" />
+    <result column="rechargeStatus" jdbcType="VARCHAR" property="rechargeStatus" />
+    <result column="rechargeMoney" jdbcType="DOUBLE" property="rechargeMoney" />
+    <result column="rechargeTime" jdbcType="TIMESTAMP" property="rechargeTime" />
+    <result column="rechargeDesc" jdbcType="VARCHAR" property="rechargeDesc" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, uid, rechargeNo, rechargeStatus, rechargeMoney, rechargeTime, rechargeDesc
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_recharge_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByRechargeNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_recharge_record
+    where rechargeNo = #{rechargeNo,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByRechargeCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from b_recharge_record
+    where uid=#{uid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByRechargePage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_recharge_record
+    where uid = #{uid,jdbcType=VARCHAR} order by rechargeTime desc 
+    limit #{currentPage,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from b_recharge_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.dongtech.model.loan.RechargeRecord">
+    insert into b_recharge_record (id, uid, rechargeNo, 
+      rechargeStatus, rechargeMoney, rechargeTime, 
+      rechargeDesc)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{rechargeno,jdbcType=VARCHAR}, 
+      #{rechargestatus,jdbcType=VARCHAR}, #{rechargemoney,jdbcType=DOUBLE}, #{rechargetime,jdbcType=TIMESTAMP}, 
+      #{rechargedesc,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.dongtech.model.loan.RechargeRecord">
+    insert into b_recharge_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="rechargeNo != null">
+        rechargeNo,
+      </if>
+      <if test="rechargeStatus != null">
+        rechargeStatus,
+      </if>
+      <if test="rechargeMoney != null">
+        rechargeMoney,
+      </if>
+      <if test="rechargeTime != null">
+        rechargeTime,
+      </if>
+      <if test="rechargeDesc != null">
+        rechargeDesc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="rechargeNo != null">
+        #{rechargeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="rechargeStatus != null">
+        #{rechargeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="rechargeMoney != null">
+        #{rechargeMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="rechargeTime != null">
+        #{rechargeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rechargeDesc != null">
+        #{rechargeDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtech.model.loan.RechargeRecord">
+    update b_recharge_record
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="rechargeno != null">
+        rechargeNo = #{rechargeno,jdbcType=VARCHAR},
+      </if>
+      <if test="rechargestatus != null">
+        rechargeStatus = #{rechargestatus,jdbcType=VARCHAR},
+      </if>
+      <if test="rechargemoney != null">
+        rechargeMoney = #{rechargemoney,jdbcType=DOUBLE},
+      </if>
+      <if test="rechargetime != null">
+        rechargeTime = #{rechargetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rechargedesc != null">
+        rechargeDesc = #{rechargedesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.dongtech.model.loan.RechargeRecord">
+    update b_recharge_record
+    set uid = #{uid,jdbcType=INTEGER},
+      rechargeNo = #{rechargeno,jdbcType=VARCHAR},
+      rechargeStatus = #{rechargestatus,jdbcType=VARCHAR},
+      rechargeMoney = #{rechargemoney,jdbcType=DOUBLE},
+      rechargeTime = #{rechargetime,jdbcType=TIMESTAMP},
+      rechargeDesc = #{rechargedesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateRechargeStatus" parameterType="java.util.Map">
+    update b_recharge_record
+    set rechargeStatus = #{rechargeStatus,jdbcType=VARCHAR}
+    where rechargeNo = #{rechargeNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

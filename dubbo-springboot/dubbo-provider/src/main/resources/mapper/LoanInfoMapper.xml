@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dongtech.mapper.loan.LoanInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.dongtech.model.loan.LoanInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="rate" jdbcType="DOUBLE" property="rate" />
+    <result column="cycle" jdbcType="INTEGER" property="cycle" />
+    <result column="release_time" jdbcType="DATE" property="releaseTime" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_money" jdbcType="DOUBLE" property="productMoney" />
+    <result column="left_product_money" jdbcType="DOUBLE" property="leftProductMoney" />
+    <result column="bid_min_limit" jdbcType="DOUBLE" property="bidMinLimit" />
+    <result column="bid_max_limit" jdbcType="DOUBLE" property="bidMaxLimit" />
+    <result column="product_status" jdbcType="INTEGER" property="productStatus" />
+    <result column="product_full_time" jdbcType="DATE" property="productFullTime" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dongtech.model.loan.LoanInfo">
+    <result column="product_desc" jdbcType="LONGVARCHAR" property="productDesc" />
+  </resultMap>
+  
+  <resultMap id="loanInfoResultMap" type="com.dongtech.model.loan.LoanInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="rate" jdbcType="DOUBLE" property="rate" />
+    <result column="cycle" jdbcType="INTEGER" property="cycle" />
+    <result column="release_time" jdbcType="DATE" property="releaseTime" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_money" jdbcType="DOUBLE" property="productMoney" />
+    <result column="bid_min_limit" jdbcType="DOUBLE" property="bidMinLimit" />
+    <result column="product_status" jdbcType="INTEGER" property="productStatus" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+        <collection property="bidInfoList" column="loanId" javaType="java.util.List" ofType="com.dongtech.model.loan.BidInfo">
+            <id column="id" jdbcType="INTEGER" property="id" />
+		    <result column="loanId" jdbcType="INTEGER" property="loanId" />
+		    <result column="uid" jdbcType="INTEGER" property="uid" />
+		    <result column="bidMoney" jdbcType="DOUBLE" property="bidMoney" />
+		    <result column="bidTime" jdbcType="DATE" property="bidTime" />
+		    <result column="bidStatus" jdbcType="DATE" property="bidStatus" />
+        </collection>    
+  </resultMap> 
+    
+  <!-- 1对多关联查询 查询满标产品及对应产品下的投标记录 -->  
+  <select id="getBidRecordForLoanInfo" parameterType="java.lang.Integer" resultMap="loanInfoResultMap">  
+      select <include refid="pBase_Column_List" /> from b_loan_info a left join b_bid_info b on a.id=b.loanId where a.product_status=#{productStatus,jdbcType=INTEGER}
+  </select>
+  
+  <sql id="Base_Column_List">
+    id, product_name, rate, cycle, release_time, product_type, product_no, product_money, left_product_money,
+    bid_min_limit, bid_max_limit, product_status, product_full_time, version
+  </sql>
+  
+  <sql id="Blob_Column_List">
+    product_desc
+  </sql>
+  
+  <sql id="pBase_Column_List">
+    a.id, a.product_name, a.rate, a.cycle, a.release_time, a.product_type, a.product_no, a.product_money, 
+    a.bid_min_limit, a.product_status, a.product_full_time, a.version, a.product_desc,
+    b.id, b.loanId, b.uid, b.bidMoney, b.bidTime, b.bidStatus
+  </sql>
+  
+  <select id="getLoanInfoByPage" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_loan_info where 1 = 1
+    <if test="productType != null">
+    	and product_type = #{productType,jdbcType=INTEGER}
+    </if>
+    	limit #{currentPage,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getLoanInfoByTotal" resultType="java.lang.Integer">
+  	select count(*) from b_loan_info where 1 = 1
+  	<if test="productType != null">
+    	and product_type = #{productType,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <select id="getLoanInfoByProductStatus" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs" >
+  	select * from b_loan_info where product_status = #{productStatus,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getLoanInfoByHistoryAverageRate" resultType="java.lang.Double">
+  	select cast(avg(rate) as decimal(10,2)) from b_loan_info
+  </select>
+  
+  <select id="getLoanInfoById" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  	select 
+	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_loan_info 
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from b_loan_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from b_loan_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.dongtech.model.loan.LoanInfo">
+    insert into b_loan_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+      <if test="cycle != null">
+        cycle,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="productNo != null">
+        product_no,
+      </if>
+      <if test="productMoney != null">
+        product_money,
+      </if>
+      <if test="bidMinLimit != null">
+        bid_min_limit,
+      </if>
+      <if test="productStatus != null">
+        product_status,
+      </if>
+      <if test="productDesc != null">
+        product_desc,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="cycle != null">
+        #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=DATE},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=INTEGER},
+      </if>
+      <if test="productNo != null">
+        #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productMoney != null">
+        #{productMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bidMinLimit != null">
+        #{bidMinLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="productStatus != null">
+        #{productStatus,jdbcType=INTEGER},
+      </if>
+      <if test="productDesc != null">
+        #{productDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtech.model.loan.LoanInfo">
+    update b_loan_info
+    <set>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=DOUBLE},
+      </if>
+      <if test="cycle != null">
+        cycle = #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=DATE},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=INTEGER},
+      </if>
+      <if test="productNo != null">
+        product_no = #{productNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productMoney != null">
+        product_money = #{productMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bidMinLimit != null">
+        bid_min_limit = #{bidMinLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="bidMaxLimit != null">
+        bid_max_limit = #{bidMaxLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="productStatus != null">
+        product_status = #{productStatus,jdbcType=INTEGER},
+      </if>
+      <if test="productFullTime != null">
+        product_full_time = #{productFullTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productDesc != null">
+        product_desc = #{productDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 投资减库存 -->
+  <update id="updateLoanInfo" parameterType="java.util.Map">
+  	<![CDATA[ 
+	  	update b_loan_info 
+	  	set left_product_money=(left_product_money-#{bidMoney,jdbcType=DOUBLE}),
+	  	version = (#{version,jdbcType=INTEGER}+1)
+	  	where id=#{loanId,jdbcType=INTEGER} 
+	  	and (left_product_money-#{bidMoney,jdbcType=DOUBLE}>=0)
+	  	and version = #{version,jdbcType=INTEGER}
+  	]]>
+  </update>
+</mapper>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>东宝科技-角色管理</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="page-header">
+            <h1>
+                用户管理
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    角色管理
+                </small>
+            </h1>
+        </div>
+        <table id="sample-table-1" class="table">
+            <thead>
+                <tr>
+                    <th class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>用户名</th>
+                    <th>角色</th>
+                    <th>用户权限</th>
+                    <th>角色操作</th>
+                    <a class="btn btn-link right" onclick="pagedocument('/menu/adduserrole');">
+                        <i class="icon-plus-sign bigger-120 green"></i>
+                        添加角色
+                    </a>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="role,roleStat : ${userRoles}">
+                    <td class="center">
+                        <label>
+                            <input type="checkbox" class="ace" th:value="${role.id}"/>
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td th:text="${role.username}">test</td>
+                    <td th:text="${role.permissionexplain}">普通权限</td>
+                    <td th:text="${role.permissionnum}">3</td>
+                    <td>
+                        <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+
+                            <button class="btn btn-xs btn-info" th:onclick="'javascript:toEditPage('+${role.id}+')'">
+                                <i class="icon-edit bigger-120"></i>
+                            </button>
+
+                            <button class="btn btn-xs btn-danger" th:onclick="'javascript:deleteUserInfo('+${role.id}+')'">
+                                <i class="icon-trash bigger-120"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!--引入user js-->
+        <script src="../../user/userrole.js"></script>
+    </body>
+</html>

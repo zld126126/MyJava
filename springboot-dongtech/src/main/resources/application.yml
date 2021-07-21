@@ -1,0 +1,65 @@
+#server port
+server:
+  port: 8081
+  tomcat:
+      uri-encoding: utf-8
+#data source
+spring:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    mode: HTML
+  profiles:
+      active: druid
+  devtools:
+      restart:
+        #禁用devtools模块的热部署功能
+        enabled: true
+# Shiro
+shiro:
+  user:
+    # 登录地址
+    loginUrl: /login
+    # 权限认证失败地址
+    unauthorizedUrl: /index
+    # 首页地址
+    indexUrl: /index
+    # 验证码开关
+    #captchaEbabled: true
+    # 验证码类型 math 数组计算 char 字符
+    #captchaType: math
+  cookie:
+    # 设置Cookie的域名 默认空，即当前访问的域名
+    domain:
+    # 设置cookie的有效访问路径
+    path: /
+    # 设置HttpOnly属性
+    httpOnly: true
+    # 设置Cookie的过期时间，天为单位
+    maxAge: 30
+  session:
+    # Session超时时间（默认30分钟）
+    expireTime: 30
+    # 同步session到数据库的周期（默认1分钟）
+    dbSyncPeriod: 1
+    # 相隔多久检查一次session的有效性，默认就是10分钟
+    validationInterval: 10
+#mybatis
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.dongtech.bean
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath:mapper/*Mapper.xml
+  # 加载全局的配置文件
+  #configLocation: classpath:mybatis/mybatis-config.xml
+
+
+
+
+
+

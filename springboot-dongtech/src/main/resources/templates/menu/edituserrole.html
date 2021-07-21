@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>东宝科技-角色修改</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="page-header">
+            <h1>
+                用户菜单
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    角色分配
+                </small>
+            </h1>
+        </div>
+
+        <div id="signup-box" class="signup-box widget-box no-border">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <h4 class="header green lighter bigger">
+                        <i class="icon-group blue"></i>
+                        修改角色
+                    </h4>
+
+                    <div class="space-6"></div>
+                    <p> 请确认你要修改的信息</p>
+
+                    <form id="editUserRole">
+                        <fieldset>
+                            <input type="hidden" name="roleid" th:value="${userRole.id}">
+
+                            <label class="block clearfix">
+                                用户名:
+                                <input th:value="${userRole.username}" type="text" readonly>
+                            </label>
+
+                            <label class="block clearfix">
+                                角色:
+                                <select id="permissionid" name="permissionid">
+                                    <option value="0">请选择角色</option>
+                                    <option th:each="permis,permisStat : ${permissionInfos}"  th:value="${permis.getId()}" th:text="${permis.getPermissionexplain()}" th:if="${userRole.permissionexplain}==${permis.getPermissionexplain()}" selected></option>
+                                    <option th:each="permis,permisStat : ${permissionInfos}"  th:value="${permis.getId()}" th:text="${permis.getPermissionexplain()}" th:if="${userRole.permissionexplain}!=${permis.getPermissionexplain()}"></option>
+                                </select>
+                            </label>
+
+                            <div class="clearfix">
+                                <button type="reset" class="pull-left btn btn-sm" onclick="resetEditUserRole()">
+                                    <i class="icon-refresh"></i>
+                                    重置
+                                </button>
+
+                                <button type="button" class="pull-left btn btn-sm btn-success" onclick="editUserRole()">
+                                    修改
+                                    <i class="icon-arrow-right icon-on-right"></i>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--引入user js-->
+        <script src="../../user/userrole.js"></script>
+    </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>东宝科技-用户管理</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="page-header">
+            <h1>
+                用户管理
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    用户管理
+                </small>
+            </h1>
+        </div>
+        <table id="sample-table-1" class="table">
+            <thead>
+                <tr>
+                    <th class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>
+                        <i class="icon-time bigger-110 hidden-480"></i>
+                        入职时间
+                    </th>
+                    <th class="hidden-480">用户状态</th>
+
+                    <th>用户密码</th>
+
+                    <th>用户操作</th>
+
+                    <a class="btn btn-link right" onclick="pagedocument('/menu/adduserinfo');">
+                        <i class="icon-plus-sign bigger-120 green"></i>
+                        添加用户
+                    </a>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr  th:each="user,userStat : ${userInfos}">
+                    <td class="center" th:value="${user.id}">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td th:text="${user.username}">test</td>
+                    <td th:text="${user.email}">xx@xx.com</td>
+                    <td th:text="${user.worktime}">2018-01-01</td>
+                    <td>
+                        <span class="label label-sm label-success" th:if="${user.workstatus == '1'}">在职</span>
+                        <span class="label label-sm label-warning" th:if="${user.workstatus != '1'}">离职</span>
+                    </td>
+                    <td th:text="${user.password}">123456</td>
+                    <td>
+                        <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                            <button class="btn btn-xs btn-success" th:onclick="'javascript:changeWorkStatus('+${user.id}+')' ">
+                                <i class="icon-ok bigger-120"></i>
+                            </button>
+
+                            <button class="btn btn-xs btn-info" th:onclick="'javascript:toEditPage('+${user.id}+')'">
+                                <i class="icon-edit bigger-120"></i>
+                            </button>
+
+                            <button class="btn btn-xs btn-danger" th:onclick="'javascript:deleteUserInfo('+${user.id}+')'">
+                                <i class="icon-trash bigger-120"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--引入user js-->
+        <script src="../../user/user.js"></script>
+    </body>
+</html>

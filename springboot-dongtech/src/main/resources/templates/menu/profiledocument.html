@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>用户信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+        <div class="page-header">
+            <h1>
+                用户管理
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    用户信息
+                </small>
+            </h1>
+        </div><!-- /.page-header -->
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div>
+                    <div id="user-profile-1" class="user-profile row">
+                        <div class="col-xs-12 col-sm-3 center">
+                            <div>
+                                <span class="profile-picture">
+                                    <img id="avatar" class="editable img-responsive" alt="dongtech的专属头像" th:src="@{/img/img.jpg}" th:width="200px" th:heigtht="200px"/>
+                                </span>
+
+                                <div class="space-4"></div>
+
+                                <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                                    <div class="inline position-relative">
+                                        <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon-circle light-green middle"></i>
+                                            &nbsp;
+                                            <span class="white"><td th:text="${userprofile.username}">用户名</td></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-9">
+
+                            <div class="space-12"></div>
+
+                            <div class="profile-user-info profile-user-info-striped">
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> 用户名 </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.username !=null}">
+                                        <span class="editable"><td th:text="${userprofile.username}">用户名</td></span>
+                                    </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.username ==null}">
+                                        <span class="editable">您很懒,还未填写数据</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> 居住地 </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.useraddress !=null}">
+                                        <i class="icon-map-marker light-orange bigger-110"></i>
+                                        <span class="editable"><td th:text="${userprofile.useraddress}">用户地址</td></span>
+                                    </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.useraddress ==null}">
+                                        <i class="icon-map-marker light-orange bigger-110"></i>
+                                        <span class="editable">您很懒,还未填写数据</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">年龄</div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.age !=null}">
+                                        <span class="editable"><td th:text="${userprofile.age}">用户年龄</td></span>
+                                    </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.age ==null}">
+                                        <span class="editable">您很懒,还未填写数据</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">加入公司时间</div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.worktime !=null}">
+                                        <span class="editable"><td th:text="${userprofile.worktime}">用户加入时间</td></span>
+                                    </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.worktime ==null}">
+                                        <span class="editable">您很懒,还未填写数据</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">关于我</div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.aboutuser !=null}">
+                                        <span class="editable"><td th:text="${userprofile.aboutuser}"></td></span>
+                                    </div>
+
+                                    <div class="profile-info-value" th:if="${userprofile.aboutuser ==null}">
+                                        <span class="editable">您很懒,还未填写数据</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">相关操作</div>
+
+                                    <div class="profile-info-value">
+                                        <button class="btn btn-xs btn-info" th:onclick="'javascript:toEditPage('+${userprofile.id}+')'">
+                                            <i class="icon-edit">编辑用户</i>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    <!--引入profile js-->
+    <script src="../../user/userprofile.js"></script>
+</body>
+</html>

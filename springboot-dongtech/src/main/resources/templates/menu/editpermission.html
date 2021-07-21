@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <title>东宝科技-权限分配</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <div class="page-header">
+            <h1>
+                用户菜单
+                <small>
+                    <i class="icon-double-angle-right"></i>
+                    修改权限
+                </small>
+            </h1>
+        </div>
+
+        <div id="signup-box" class="signup-box widget-box no-border">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <h4 class="header green lighter bigger">
+                        <i class="icon-group blue"></i>
+                        修改权限
+                    </h4>
+
+                    <div class="space-6"></div>
+                    <p> 请确认你要修改的信息</p>
+
+                    <form id="editUserInfo">
+                        <fieldset>
+                            <input type="hidden" name="userid" >
+                            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                    <input name="text" type="text" class="form-control" th:value="${editpermission.pname}" readonly/>
+                                </span>
+                            </label>
+                            <label class="block clearfix">
+                                权限目录:
+                                <div th:each="permissionpath,permissionpathStat : ${editpermission.permissionpaths}">
+                                    <label class="form-control" th:text="${permissionpath.permissionpath}"></label>
+                                </div>
+                            </label>
+
+                            <div class="clearfix">
+                                <button type="reset" class="pull-left btn btn-sm" onclick="resetEditUserInfo()">
+                                    <i class="icon-refresh"></i>
+                                    重置
+                                </button>
+
+                                <button type="button" class="pull-left btn btn-sm btn-success" onclick="editUseInfo()">
+                                    修改
+                                    <i class="icon-arrow-right icon-on-right"></i>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--引入user js-->
+        <script src="../../user/user.js"></script>
+    </body>
+</html>

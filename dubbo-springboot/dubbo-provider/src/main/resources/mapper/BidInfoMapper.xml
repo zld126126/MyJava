@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dongtech.mapper.loan.BidInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.dongtech.model.loan.BidInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loanId" jdbcType="INTEGER" property="loanId" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="bidMoney" jdbcType="DOUBLE" property="bidMoney" />
+    <result column="bidTime" jdbcType="TIMESTAMP" property="bidTime" />
+    <result column="bidStatus" jdbcType="INTEGER" property="bidStatus" />
+  </resultMap>
+  
+  <!-- 投资记录与投资用户 一对一 -->
+  <resultMap id="BidUserBaseResultMap" type="com.dongtech.model.loan.BidInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loanId" jdbcType="INTEGER" property="loanId" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="bidMoney" jdbcType="DOUBLE" property="bidMoney" />
+    <result column="bidTime" jdbcType="TIMESTAMP" property="bidTime" />
+    <result column="bidStatus" jdbcType="INTEGER" property="bidStatus" />
+    <association property="user" javaType="com.dongtech.model.user.User">
+        <id column="id" jdbcType="INTEGER" property="id" />
+    	<result column="phone" jdbcType="VARCHAR" property="phone" />
+    	<result column="loginPassword" jdbcType="VARCHAR" property="loginPassword" />
+    	<result column="name" jdbcType="VARCHAR" property="name" />
+    	<result column="idCard" jdbcType="VARCHAR" property="idCard" />
+    	<result column="addTime" jdbcType="TIMESTAMP" property="addTime" />
+    	<result column="lastLoginTime" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    </association>
+  </resultMap>
+  
+  <!-- 投资记录与产品信息 一对一 -->
+  <resultMap id="BidLoanBaseResultMap" type="com.dongtech.model.loan.BidInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loanId" jdbcType="INTEGER" property="loanId" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="bidMoney" jdbcType="DOUBLE" property="bidMoney" />
+    <result column="bidTime" jdbcType="TIMESTAMP" property="bidTime" />
+    <result column="bidStatus" jdbcType="INTEGER" property="bidStatus" />
+    <association property="loanInfo" javaType="com.dongtech.model.loan.LoanInfo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+	    <result column="rate" jdbcType="DOUBLE" property="rate" />
+	    <result column="cycle" jdbcType="INTEGER" property="cycle" />
+	    <result column="release_time" jdbcType="DATE" property="releaseTime" />
+	    <result column="product_type" jdbcType="INTEGER" property="productType" />
+	    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+	    <result column="product_money" jdbcType="DOUBLE" property="productMoney" />
+	    <result column="left_product_money" jdbcType="DOUBLE" property="leftProductMoney" />
+	    <result column="bid_min_limit" jdbcType="DOUBLE" property="bidMinLimit" />
+	    <result column="bid_max_limit" jdbcType="DOUBLE" property="bidMaxLimit" />
+	    <result column="product_status" jdbcType="INTEGER" property="productStatus" />
+	    <result column="product_full_time" jdbcType="DATE" property="productFullTime" />
+	    <result column="version" jdbcType="INTEGER" property="version" />
+    </association>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, loanId, uid, bidMoney, bidTime, bidStatus
+  </sql>
+  
+  <sql id="User_Column_List">
+    phone, loginPassword, name,	idCard,	addTime, lastLoginTime,	headerImage
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_bid_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectBidInfoByLoanId" parameterType="java.lang.Integer" resultMap="BidUserBaseResultMap">
+    select a.*, b.*
+    from b_bid_info a left join u_user b
+    on a.uid=b.id where a.loanId = #{loanId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getAllBidMoney" resultType="java.lang.Double">
+    select 
+    sum(bidMoney)
+    from b_bid_info
+  </select>
+  
+  <select id="getBidInfoByTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from b_bid_info a left join b_loan_info b on a.loanId=b.id 
+    where a.uid = #{uid,jdbcType=INTEGER} order by a.bidTime desc 
+  </select>
+  
+  <select id="getBidInfoByPage" parameterType="java.util.Map" resultMap="BidLoanBaseResultMap">
+    select 
+    a.*, b.*
+    from b_bid_info a left join b_loan_info b on a.loanId=b.id 
+    where a.uid = #{uid,jdbcType=INTEGER} order by a.bidTime desc 
+    limit #{currentPage,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from b_bid_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertSelective" parameterType="com.dongtech.model.loan.BidInfo">
+    insert into b_bid_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="loanId != null">
+        loanId,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="bidMoney != null">
+        bidMoney,
+      </if>
+      <if test="bidTime != null">
+        bidTime,
+      </if>
+      <if test="bidStatus != null">
+        bidStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loanId != null">
+        #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bidMoney != null">
+        #{bidMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bidTime != null">
+        #{bidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bidStatus != null">
+        #{bidStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.dongtech.model.loan.BidInfo">
+    update b_bid_info
+    <set>
+      <if test="loanId != null">
+        loanId = #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bidMoney != null">
+        bidMoney = #{bidMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bidTime != null">
+        bidTime = #{bidTime,jdbcType=DATE},
+      </if>
+      <if test="bidStatus != null">
+        bidStatus = #{bidStatus,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+</mapper>
