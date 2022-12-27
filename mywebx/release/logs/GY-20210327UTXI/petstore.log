@@ -1,0 +1,28 @@
+
+1319 [2022-12-27 16:54:54 ] -   [ip=, ref=, ua=, sid=]
+  WARN  c.a.c.webx.config.WebxConfiguration - Application is running in Development Mode.
+
+3595 [2022-12-27 16:54:57 ] -   [ip=, ref=, ua=, sid=]
+  WARN  c.a.c.webx.config.WebxConfiguration - Application is running in Development Mode.
+
+4287 [2022-12-27 16:54:57 ] -   [ip=, ref=, ua=, sid=]
+  WARN  c.a.c.webx.config.WebxConfiguration - Application is running in Development Mode.
+
+4847 [2022-12-27 16:54:58 ] -   [ip=, ref=, ua=, sid=]
+  WARN  c.a.c.webx.config.WebxConfiguration - Application is running in Development Mode.
+
+133451 [2022-12-27 16:57:07 Development Mode] - GET /user/account.htm [ip=0:0:0:0:0:0:0:1, ref=http://localhost:8081/homepage.htm, ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36, sid=WODFX861-M9V6VPD0DHH985SSWJS53-C85TZ5CL-0]
+  WARN  c.a.c.t.a.PageAuthorizationService - Access Denied.  No matches found for request: target="/account", user="null", roles=[], action=[screen]
+
+280691 [2022-12-27 16:59:34 Development Mode] - GET /user/account.htm [ip=0:0:0:0:0:0:0:1, ref=http://localhost:8081/?home, ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36, sid=WODFX861-M9V6VPD0DHH985SSWJS53-C85TZ5CL-0]
+  WARN  c.a.c.t.a.PageAuthorizationService - Access Denied.  No matches found for request: target="/account", user="null", roles=[], action=[screen]
+
+289923 [2022-12-27 16:59:43 Development Mode] - GET /store/edit/category_list.htm [ip=0:0:0:0:0:0:0:1, ref=http://localhost:8081/?home, ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36, sid=WODFX861-M9V6VPD0DHH985SSWJS53-C85TZ5CL-0]
+  WARN  c.a.c.t.a.PageAuthorizationService - Access Denied: target="/edit/categoryList", user="null", roles=[], action="screen"
+Match {
+  pattern   = /edit
+  grants[0] = Grant {
+                users = [anonymous, *]
+                deny  = [*]
+              }
+}

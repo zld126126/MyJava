@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Sequence">
+    <typeAlias alias="sequence" type="com.alibaba.sample.petstore.dal.dataobject.Sequence" />
+    <resultMap id="orderResult" class="sequence">
+        <result property="name" column="name" />
+        <result property="nextId" column="nextid" />
+    </resultMap>
+    <select id="getSequence" resultMap="orderResult" parameterClass="sequence"><![CDATA[
+        select name, nextid from SEQUENCE where NAME = #name# 
+    ]]></select>
+    <update id="updateSequence" parameterClass="sequence"><![CDATA[
+        update SEQUENCE set NEXTID = #nextId# where NAME = #name#
+    ]]></update>
+</sqlMap>

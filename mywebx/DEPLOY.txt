@@ -1,0 +1,45 @@
+发布指南
+
+请先阅读
+=======
+
+https://github.com/webx/citrus/blob/master/DEPLOY.txt
+
+发布步骤
+========
+
+1. 确保所有源代码提交
+2. 发布
+
+cd citrus-sample
+mvn clean deploy -Pdeployment
+
+确保使用deployment profile，以便生成sonatype所需要的数字签名。
+并非所有子项目都会被发布，只有那些 maven-deploy-plugin.skip=false 的项目才会被发布。
+
+3. 测试petstore
+
+删除$HOME/.m2/repository/com/alibaba/citrus
+cd petstore
+mvn clean install -Psonatype
+cd web
+mvn jetty:run-war
+
+4. 测试archetype
+
+mvn archetype:generate \
+ -DgroupId=com.alibaba.webx \
+ -DartifactId=tutorial1 \
+ -Dversion=1.0-SNAPSHOT \
+ -Dpackage=com.alibaba.webx.tutorial1 \
+ -DarchetypeArtifactId=archetype-webx-quickstart \
+ -DarchetypeGroupId=com.alibaba.citrus.sample \
+ -DarchetypeVersion=1.5 \
+ -DinteractiveMode=false \
+ -Psonatype
+
+cd tutorial1
+mvn jetty:run
+
+5. 在sonatype管理界面中promote项目到central maven repository
+6. 对发布版本创建tags

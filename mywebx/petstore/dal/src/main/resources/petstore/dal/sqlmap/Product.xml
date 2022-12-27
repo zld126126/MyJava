@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="Product">
+    <typeAlias alias="product" type="com.alibaba.sample.petstore.dal.dataobject.Product" />
+    <resultMap id="productResult" class="product">
+        <result property="productId" column="PRODUCTID" />
+        <result property="name" column="NAME" />
+        <result property="logo" column="LOGO" />
+        <result property="description" column="DESCN" />
+        <result property="categoryId" column="CATEGORY" />
+    </resultMap>
+    <select id="getProduct" resultMap="productResult" parameterClass="string"><![CDATA[
+        select PRODUCTID, NAME, LOGO, DESCN, CATEGORY from PRODUCT where PRODUCTID = #value#
+    ]]></select>
+    <select id="getProductListByCategory" resultMap="productResult" parameterClass="string"><![CDATA[
+        select PRODUCTID, NAME, LOGO, DESCN, CATEGORY from PRODUCT where CATEGORY = #value#
+    ]]></select>
+    <select id="searchProductList" resultMap="productResult"><![CDATA[
+        select PRODUCTID, NAME, LOGO, DESCN,
+        CATEGORY from PRODUCT
+        ]]>
+        <dynamic prepend="WHERE">
+            <iterate property="keywordList" open="" close="" conjunction="OR"><![CDATA[
+                   lower(name) like #keywordList[]#
+                OR lower(category) like #keywordList[]#
+                OR lower(descn) like #keywordList[]#
+            ]]></iterate>
+        </dynamic>
+    </select>
+    <insert id="insertProduct" parameterClass="product"><![CDATA[
+        insert into PRODUCT (
+            PRODUCTID,
+            NAME,
+            LOGO,
+            DESCN,
+            CATEGORY
+        ) values (
+            #productId#,
+            #name#,
+            #logo#,
+            #description#,
+            #categoryId#
+        )
+    ]]></insert>
+</sqlMap>
