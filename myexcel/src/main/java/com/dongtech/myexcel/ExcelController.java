@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class ExcelController {
     @ApiOperation(value = "上传excel文件")
     @RequestMapping(method= {RequestMethod.GET,RequestMethod.POST},value="/uploadexcel")
     @ResponseBody
-    public String UploadExcel(MultipartFile upload){
+    public String UploadExcel(MultipartFile upload) throws IOException{
         JSONObject res = new JSONObject();
         //上传文件为空...
         if (upload == null){
@@ -50,8 +51,9 @@ public class ExcelController {
             return res.toString();
         }
 
+        InputStream inputStream = null;
         try{
-            InputStream inputStream = upload.getInputStream();
+            inputStream = upload.getInputStream();
             ExcelListener listener = new ExcelListener();
             //headRowNumber从第0行开始需要读表头
             EasyExcel.read(inputStream, listener).sheet().headRowNumber(0).doRead();
@@ -61,6 +63,10 @@ public class ExcelController {
             logger.error(e.toString());
             res.put("ErrorMessage","上传失败!!!");
             return res.toString();
+        }finally{
+            if (inputStream != null){
+                inputStream.close();
+            }
         }
         return res.toString();
     }
